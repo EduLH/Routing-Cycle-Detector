@@ -13,7 +13,7 @@ def find_longest_cycle(graph):
 
         for neighbor in graph.get(node, []):
             if neighbor in path_set:
-                print('Cycle found')
+                # print('Cycle found')
                 cycle_length = len(path) - path.index(neighbor)
                 if cycle_length > max_cycle:
                     max_cycle = cycle_length
@@ -66,9 +66,7 @@ def main():
         graph = {}
 
         for source, destination in edges:
-            if source not in graph:
-                graph[source] = []
-            graph[source].append(destination)
+            graph.setdefault(source, []).append(destination)
 
         longest_cycle = find_longest_cycle(graph)
 
@@ -77,13 +75,15 @@ def main():
             max_cycle_claim = claim_id
             max_cycle_status = status_code
 
-    if max_cycle_claim is not None:
-        print(
-            f"Longest cycle so far: "
-            f"claim={max_cycle_claim}, status={max_cycle_status}, length={max_cycle_length}"
-        )
-    else:
-        print("No cycles found")
+    if max_cycle_claim is None:
+        return
+
+    result = f"{max_cycle_claim},{max_cycle_status},{max_cycle_length}"
+
+    print(result)
+
+    with open("solution.txt", "w", encoding="utf-8") as f:
+        f.write(result)
 
 
 if __name__ == "__main__":
