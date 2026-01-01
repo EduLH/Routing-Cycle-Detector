@@ -13,16 +13,23 @@ def main():
         print(f"File not found: {file_path}")
         sys.exit(1)
 
-    line_count = 0
+    # Key: (claim_id, status_code)
+    # Value: list of (source, destination)
+    routes = {}
 
     with open(file_path, "r", encoding="utf-8") as file:
         for line in file:
             line = line.strip()
             if not line:
                 continue
-            line_count += 1
 
-    print(f"Processed {line_count} lines")
+            source, destination, claim_id, status_code = line.split("|")
+            key = (claim_id, status_code)
+
+            if key not in routes:
+                routes[key] = []
+
+            routes[key].append((source, destination))
 
 
 if __name__ == "__main__":
